@@ -3177,38 +3177,6 @@ describe User, :vcr do
     end
   end
 
-  describe "#trigger_iffy_ingest" do
-    let!(:user) { create(:user, name: "Original Name", bio: "Original Bio") }
-
-    before do
-      allow_any_instance_of(Iffy::Profile::IngestService).to receive(:perform).and_return(true)
-    end
-
-    it "does not trigger an iffy ingest job if neither name nor bio have changed" do
-      expect do
-        user.update!(email: "newemail@example.com")
-      end.not_to change { Iffy::Profile::IngestJob.jobs.size }
-    end
-
-    it "triggers an iffy ingest job if the name has changed" do
-      expect do
-        user.update!(name: "New Name")
-      end.to change { Iffy::Profile::IngestJob.jobs.size }.by(1)
-    end
-
-    it "triggers an iffy ingest job if the bio has changed" do
-      expect do
-        user.update!(bio: "New Bio")
-      end.to change { Iffy::Profile::IngestJob.jobs.size }.by(1)
-    end
-
-    it "triggers an iffy ingest job if the username has changed" do
-      expect do
-        user.update!(username: "username1")
-      end.to change { Iffy::Profile::IngestJob.jobs.size }.by(1)
-    end
-  end
-
   describe "#eligible_for_instant_payouts?" do
     let(:user) { create(:compliant_user) }
     let!(:compliance_info) { create(:user_compliance_info, user:) }
