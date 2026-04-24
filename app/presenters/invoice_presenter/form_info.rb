@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class InvoicePresenter::FormInfo
+  BUSINESS_ID_LABELS = BusinessIdLabels::LABELS
+  BUSINESS_ID_COUNTRY_CODES = BusinessIdLabels::COUNTRY_CODES
+
   def initialize(chargeable, buyer: nil)
     @chargeable = chargeable
     @buyer = buyer
@@ -12,6 +15,14 @@ class InvoicePresenter::FormInfo
 
   def display_vat_id?
     chargeable.taxed_by_gumroad? && !chargeable.purchase_sales_tax_info&.business_vat_id
+  end
+
+  def business_id_country_codes
+    BUSINESS_ID_COUNTRY_CODES
+  end
+
+  def business_id_labels
+    BUSINESS_ID_LABELS
   end
 
   def vat_id_label
