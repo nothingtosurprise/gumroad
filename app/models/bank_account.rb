@@ -58,6 +58,18 @@ class BankAccount < ApplicationRecord
     Currency::USD
   end
 
+  def stripe_external_account_country
+    country
+  end
+
+  def stripe_external_account_currency
+    currency
+  end
+
+  def stripe_external_account_routing_number
+    routing_number
+  end
+
   def to_hash
     hash = {
       bank_number:,
